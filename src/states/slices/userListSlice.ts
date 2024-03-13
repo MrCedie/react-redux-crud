@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { UserRepositoryImpl } from "../../data/local/userRepositoryImpl";
+import { UserRepositoryImpl } from "../../data/network/userRepositoryImpl";
 
 const userRepository = new UserRepositoryImpl();
 
