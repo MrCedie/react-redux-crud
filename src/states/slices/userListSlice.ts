@@ -1,31 +1,20 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { UserRepositoryImpl } from "../../data/network/userRepositoryImpl";
+import { getUsers } from "../actions/userActions";
+import { User } from "../../domain/interfaces/user";
 
-const userRepository = new UserRepositoryImpl();
-
-export interface UserState {
-  users: any[];
+export interface UserListState {
+  users: User[];
   loading: boolean;
   error: any;
 }
 
-const initialState: UserState = {
+const initialState: UserListState = {
   users: [],
   loading: false,
   error: null,
 };
 
-export const getUsers = createAsyncThunk("users/getUsers", async () => {
-  try {
-    console.log('called')
-    const users = await userRepository.getUsers();
-    return users;
-  } catch (error) {
-    throw error;
-  }
-});
-
-const UserListSlice = createSlice({
+const userListSlice = createSlice({
   name: "users",
   initialState,
   reducers: {},
@@ -46,4 +35,4 @@ const UserListSlice = createSlice({
   },
 });
 
-export default UserListSlice.reducer;
+export default userListSlice.reducer;
