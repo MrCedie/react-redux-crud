@@ -2,6 +2,8 @@ name: Second Workflow
 
 on:
   push:
+  repository_dispatch:
+    types: [fail-fast]
 
 jobs:
   conditional-test:

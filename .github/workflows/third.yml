@@ -2,7 +2,7 @@ name: third Workflow
 
 on:
   push:
-    paths: ["changes-folder/**"]
+    paths: ["*","changes-folder/**"]
 
 jobs:
   conditional-test:
