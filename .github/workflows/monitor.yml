@@ -20,11 +20,11 @@ jobs:
 
           echo "${runs}" > runs.json
 
-          echo "::set-env name=RUNS_JSON::$(cat runs.json)"
+          echo "RUNS_JSON=$(cat runs.json)" >> $GITHUB_ENV
 
       - name: Cancel Workflows
         run: |
-          for id in $(jq -r '.[].id' <<< "${{ env.RUNS_JSON }}"); do
+          for id in $(jq -r '.[].id' <<< "${RUNS_JSON}"); do
             curl -X POST \
               -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
               -H "Accept: application/vnd.github.v3+json" \
