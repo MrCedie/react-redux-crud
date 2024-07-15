@@ -2,8 +2,6 @@ name: Second Workflow
 
 on:
   push:
-  repository_dispatch:
-    types: [fail-fast]
 
 jobs:
   conditional-test:
@@ -14,7 +12,30 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Delay for 50 seconds
-        run: sleep 50s
+      - name: Download fail-fast indicator
+        uses: actions/download-artifact@v3
+        with:
+          name: fail-fast
+        continue-on-error: true
+
+      - name: Check for fail-fast indicator
+        id: check_fail_fast
+        run: |
+          if [ -f fail-fast.txt ]; then
+            echo "Fail-fast indicator found. Exiting..."
+            exit 1
+          fi
+
+      - name: Run second job tasks
+        if: steps.check_fail_fast.outcome != 'failure'
+        run: echo "Running tasks in the second job..."
+
+      - name: Delay for 40 seconds
+        run: sleep 40s
+
+      - name: Delay for 10 seconds
+        with:
+          name: fail-fast
+        run: sleep 10s
 
 

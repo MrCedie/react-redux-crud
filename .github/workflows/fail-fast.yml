@@ -1,0 +1,18 @@
+name: Fail-Fast Workflow
+
+on:
+  repository_dispatch:
+    types: [fail-fast]
+
+jobs:
+  set-fail-fast:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set fail-fast variable
+        run: echo "fail" > fail-fast.txt
+
+      - name: Upload fail-fast indicator
+        uses: actions/upload-artifact@v3
+        with:
+          name: fail-fast
+          path: fail-fast.txt
