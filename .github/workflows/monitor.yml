@@ -18,11 +18,11 @@ jobs:
           runs=$(curl -s -H 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
             -X GET https://api.github.com/repos/${{ github.repository }}/actions/runs | jq -c '.workflow_runs[] | select(.id != "${{ github.event.workflow_run.id }}") | {id: .id}')
 
-          echo "::set-output name=runs::$runs"
+          echo "RUNS_JSON=$(echo "${runs}" | jq --raw-output)" >> $GITHUB_ENV
 
       - name: Cancel Workflows
         run: |
-          for id in $(echo "${{ steps.get_workflow_runs.outputs.runs }}" | jq -r '.id'); do
+          for id in $(echo "${RUNS_JSON}" | jq -r '.id'); do
             curl -X POST \
               -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
               -H "Accept: application/vnd.github.v3+json" \
