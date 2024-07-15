@@ -1,0 +1,32 @@
+name: Monitor Workflows
+
+on:
+  workflow_run:
+    workflows:
+      - "Main workflow"
+      - "Second Workflow"
+      - "third Workflow"
+    types:
+      - completed
+
+jobs:
+  cancel_on_failure:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    steps:
+      - name: Cancel Main workflow
+        uses: stefanzweifel/git-auto-cancel-action@v0.8.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          run_id: ${{ github.event.workflow_run.id }}
+      - name: Cancel Second Workflow
+        uses: stefanzweifel/git-auto-cancel-action@v0.8.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          run_id: ${{ github.event.workflow_run.id }}
+      - name: Cancel third Workflow
+        uses: stefanzweifel/git-auto-cancel-action@v0.8.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          run_id: ${{ github.event.workflow_run.id }}
+      # Add similar steps for other workflows as needed
