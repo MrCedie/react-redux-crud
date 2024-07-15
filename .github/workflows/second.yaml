@@ -1,4 +1,4 @@
-name: Conditional Test with Delay
+name: Second Workflow
 
 on:
   push:

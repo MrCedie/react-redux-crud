@@ -1,10 +1,10 @@
-name: Test
+name: Main workflow
 
 on: push
 
 jobs:
-  lint:
-    name: lint code base
+  test:
+    name: Test code base
     runs-on: ubuntu-latest
     strategy:
       fail-fast: true
@@ -22,3 +22,14 @@ jobs:
 
       - name: Run test
         run: npm run test
+
+      - name: Create fail-fast indicator
+        if: failure()
+        run: echo "fail" > fail-fast.txt
+
+      - name: Upload fail-fast indicator
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: fail-fast
+          path: fail-fast.txt
