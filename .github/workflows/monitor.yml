@@ -15,7 +15,7 @@ jobs:
       - name: Cancel Workflows
         run: |
           runs="${{ steps.get_workflow_runs.outputs.runs }}"
-          for id in $(echo "${runs}" | jq -r '.workflow_runs[] | select(.id != ${{ github.event.workflow_run.id }}) | .id'); do
+          for id in $(echo "${runs}" | jq -r '.workflow_runs[] | .id'); do
             curl -X POST \
               -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
               -H "Accept: application/vnd.github.v3+json" \
