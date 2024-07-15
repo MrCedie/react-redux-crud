@@ -20,8 +20,6 @@ jobs:
         run: sleep 40s
 
       - name: Delay for 10 seconds
-        with:
-          name: fail-fast
-        run: sleep 10s
+        run: sleep 20s
 
 
