@@ -1,0 +1,39 @@
+name: Cache NPM
+description: "Restore and/or save NPM cache."
+inputs:
+  restore-only:
+    description: Disable cache saving
+    type: boolean
+    default: false
+  dir:
+    description: Directory where the cache is used
+    type: string
+    default: admin
+
+runs:
+  using: "composite"
+  steps:
+    - name: Get NPM cache directory
+      id: cache-dir
+      run: echo "dir=$(npm config get cache)" >> $GITHUB_OUTPUT
+      shell: bash
+
+    - name: Cache NPM
+      if: ${{ inputs.restore-only == 'false' }}
+      uses: actions/cache@v3
+      with:
+        path: ${{ steps.cache-dir.outputs.dir }}
+        key: npm-${{ runner.os }}-${{ inputs.dir }}-${{ hashFiles('./package.json') }}
+        restore-keys: |
+          npm-${{ runner.os }}-${{ inputs.dir }}-
+          npm-${{ runner.os }}-
+
+    - name: Restore NPM cache
+      if: ${{ inputs.restore-only == 'true' }}
+      uses: "actions/cache/restore@v3"
+      with:
+        path: ${{ steps.cache-dir.outputs.dir }}
+        key: npm-${{ runner.os }}-${{ inputs.dir }}-${{ hashFiles('./package.json') }}
+        restore-keys: |
+          npm-${{ runner.os }}-${{ inputs.dir }}-
+          npm-${{ runner.os }}-
