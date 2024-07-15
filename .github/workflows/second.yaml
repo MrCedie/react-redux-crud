@@ -2,7 +2,11 @@ name: Second Workflow
 
 on:
   push:
-
+  workflow_run:
+    workflows: ["Main workflow", "third Workflow"]
+    types:
+      - completed
+      
 concurrency:
   group: second-workflow-${{ github.ref }}
   cancel-in-progress: true

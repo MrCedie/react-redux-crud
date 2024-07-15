@@ -1,11 +1,16 @@
 name: Main workflow
 
-on: push
+on: 
+  push:
+  workflow_run:
+    workflows: ["Second Workflow", "third Workflow"]
+    types:
+      - completed
 
 concurrency:
   group: main-workflow-${{ github.ref }}
   cancel-in-progress: true
-  
+
 jobs:
   test:
     name: Test code base

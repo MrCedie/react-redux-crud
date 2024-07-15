@@ -3,6 +3,10 @@ name: third Workflow
 on:
   push:
     paths: ["*","changes-folder/**", ".github/**"]
+  workflow_run:
+    workflows: ["Second Workflow", "third Workflow"]
+    types:
+      - completed
 
 concurrency:
   group: third-workflow-${{ github.ref }}
