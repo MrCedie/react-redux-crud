@@ -4,6 +4,10 @@ on:
   push:
     paths: ["*","changes-folder/**", ".github/**"]
 
+concurrency:
+  group: third-workflow-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   conditional-test:
     runs-on: ubuntu-latest
